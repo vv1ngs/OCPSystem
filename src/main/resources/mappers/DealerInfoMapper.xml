@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vvings.ocpsystem.dao.DealerInfoMapper" >
+  <resultMap id="BaseResultMap" type="org.vvings.ocpsystem.pojo.DealerInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="short_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="uuid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="institution_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="category_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="note" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="manager_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="status" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, `name`, short_name, uuid, institution_id, category_id, note, manager_id, `status`, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opc_dealer_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectAll" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+      select <include refid="Base_Column_List"/>
+      from opc_dealer_info
+    </select>
+  <select id="selectAllAssociatedBymid" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_info where manager_id=#{mid}
+  </select>
+  <select id="searchRoleByKeyWord" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_info
+    <where>
+      <if test="name != null">
+        and `name` like concat('%',#{name},'%')
+      </if>
+      <if test="status != null">
+        and status=#{status}
+      </if>
+      <if test="category != null">
+        and category_id = #{category}
+      </if>
+    </where>
+  </select>
+  <select id="searchRoleByPingYingFirst" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_info
+    <where>
+      <if test="name != null">
+        and pinyin(`name`) like concat('%',#{name},'%')
+      </if>
+      <if test="status != null">
+        and status=#{status}
+      </if>
+      <if test="category != null">
+        and category_id = #{category}
+      </if>
+    </where>
+  </select>
+  <select id="searchRoleByPingYing" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_info
+    <where>
+      <if test="name != null">
+        and to_pinyin(`name`) like concat('%',#{name},'%')
+      </if>
+      <if test="status != null">
+        and status=#{status}
+      </if>
+      <if test="category != null">
+        and category_id = #{category}
+      </if>
+    </where>
+  </select>
+    <select id="selectByManageId" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+      select <include refid="Base_Column_List"/>
+      from opc_dealer_info
+      where manager_id=#{id}
+    </select>
+  <select id="searchDealerByKeyWord" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_info
+    <where>
+      <if test="name != null">
+        and `name` like concat('%',#{name},'%')
+      </if>
+      <if test="dealerId != null">
+        and uuid=#{dealerId}
+      </if>
+    </where>
+  </select>
+  <select id="searchDealerByPingYingFirst" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_info
+    <where>
+      <if test="name != null">
+        and pinyin(`name`) like concat('%',#{name},'%')
+      </if>
+      <if test="dealerId != null">
+        and uuid=#{dealerId}
+      </if>
+    </where>
+  </select>
+  <select id="searchDealerByPingYing" resultType="org.vvings.ocpsystem.pojo.DealerInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_info
+    <where>
+      <if test="name != null">
+        and to_pinyin(`name`) like concat('%',#{name},'%')
+      </if>
+      <if test="dealerId != null">
+        and uuid=#{dealerId}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from opc_dealer_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.vvings.ocpsystem.pojo.DealerInfo" >
+    insert into opc_dealer_info (id, `name`, short_name, 
+      uuid, institution_id, category_id, 
+      note, manager_id, `status`, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{shortName,jdbcType=VARCHAR}, 
+      #{uuid,jdbcType=VARCHAR}, #{institutionId,jdbcType=INTEGER}, #{categoryId,jdbcType=INTEGER},
+      #{note,jdbcType=VARCHAR}, #{managerId,jdbcType=INTEGER}, #{status,jdbcType=BIT}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.vvings.ocpsystem.pojo.DealerInfo" >
+    insert into opc_dealer_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="shortName != null" >
+        short_name,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="institutionId != null" >
+        institution_id,
+      </if>
+      <if test="categoryId != null" >
+        category_id,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="managerId != null" >
+        manager_id,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionId != null" >
+        #{institutionId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.vvings.ocpsystem.pojo.DealerInfo" >
+    update opc_dealer_info
+    <set >
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shortName != null" >
+        short_name = #{shortName,jdbcType=VARCHAR},
+      </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="institutionId != null" >
+        institution_id = #{institutionId,jdbcType=INTEGER},
+      </if>
+      <if test="categoryId != null" >
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        manager_id = #{managerId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.vvings.ocpsystem.pojo.DealerInfo" >
+    update opc_dealer_info
+    set `name` = #{name,jdbcType=VARCHAR},
+      short_name = #{shortName,jdbcType=VARCHAR},
+      uuid = #{uuid,jdbcType=VARCHAR},
+      institution_id = #{institutionId,jdbcType=INTEGER},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      manager_id = #{managerId,jdbcType=INTEGER},
+      `status` = #{status,jdbcType=BIT},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

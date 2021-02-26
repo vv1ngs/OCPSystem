@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vvings.ocpsystem.dao.OrderInfoMapper" >
+  <resultMap id="BaseResultMap" type="org.vvings.ocpsystem.pojo.OrderInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="child_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="dealer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="depot_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_id" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="get_product_year" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="get_product_month" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="get_product_month_detailed" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="note" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="area" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="reject_reason" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="total_volume" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="total_count" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="total_amount" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <arg column="first_verify_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="first_verify_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="review_verify_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="review_verify_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, child_id, dealer_id, depot_id, order_id, get_product_year, get_product_month, 
+    get_product_month_detailed, note, area, `status`, reject_reason, total_volume, total_count, 
+    total_amount, first_verify_name, first_verify_time, review_verify_name, review_verify_time, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opc_order_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllBystatus" resultType="org.vvings.ocpsystem.pojo.OrderInfo">
+    select <include refid="Base_Column_List"/>  from opc_order_info
+    <where>
+      <if test=" i != null">
+       and  `status` = #{i}
+      </if>
+    </where>
+  </select>
+  <select id="selectByOrderId" resultType="org.vvings.ocpsystem.pojo.OrderInfo">
+    select <include refid="Base_Column_List"/> from opc_order_info where id=#{id}
+  </select>
+  <select id="searchOrder" resultType="org.vvings.ocpsystem.pojo.OrderInfo">
+    select <include refid="Base_Column_List"/> from opc_order_info
+    <where>
+      <if test="orderId != null">
+        and order_id=#{orderId}
+      </if>
+      <if test="status != null">
+        and `status`=#{status}
+      </if>
+      <if test="id != null">
+        and dealer_id=#{id}
+      </if>
+      <if test="name != null">
+        and area=#{name}
+      </if>
+      <if test="startyear !=null">
+        and get_product_year <![CDATA[ >= ]]> #{startyear}
+      </if>
+      <if test="endyear != null">
+        and  #{endyear} <![CDATA[ >= ]]> get_product_year
+      </if>
+      <if test="startMonth !=null">
+        and get_product_month <![CDATA[ >= ]]> #{startyear}
+      </if>
+      <if test="endMonth != null">
+        and   #{endyear} <![CDATA[ >= ]]> get_product_month
+      </if>
+      <if test="startxun !=null">
+        and  get_product_month_detailed <![CDATA[ >= ]]> #{startyear}
+      </if>
+      <if test="endxun != null">
+        and #{endyear} <![CDATA[ >= ]]> get_product_month_detailed
+      </if>
+      <if test="startAmount !=null">
+       and  total_amount <![CDATA[ >= ]]> #{startAmount}
+      </if>
+    <if test="endAmount != null">
+      and  #{endAmount} <![CDATA[ >= ]]> total_amount
+    </if>
+    </where>
+  </select>
+  <select id="selectById" resultType="org.vvings.ocpsystem.pojo.OrderInfo">
+    select <include refid="Base_Column_List"/>
+    from opc_order_info where child_id=#{id}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from opc_order_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.vvings.ocpsystem.pojo.OrderInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into opc_order_info (id, child_id, dealer_id, 
+      depot_id, order_id, get_product_year, 
+      get_product_month, get_product_month_detailed, 
+      note, area, `status`, 
+      reject_reason, total_volume, total_count, 
+      total_amount, first_verify_name, first_verify_time, 
+      review_verify_name, review_verify_time, create_time, 
+      update_time)
+    values (#{id,jdbcType=INTEGER}, #{childId,jdbcType=INTEGER}, #{dealerId,jdbcType=INTEGER}, 
+      #{depotId,jdbcType=INTEGER}, #{orderId,jdbcType=VARCHAR}, #{getProductYear,jdbcType=INTEGER},
+      #{getProductMonth,jdbcType=INTEGER}, #{getProductMonthDetailed,jdbcType=INTEGER}, 
+      #{note,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{rejectReason,jdbcType=VARCHAR}, #{totalVolume,jdbcType=INTEGER}, #{totalCount,jdbcType=INTEGER}, 
+      #{totalAmount,jdbcType=DECIMAL}, #{firstVerifyName,jdbcType=VARCHAR}, #{firstVerifyTime,jdbcType=TIMESTAMP}, 
+      #{reviewVerifyName,jdbcType=VARCHAR}, #{reviewVerifyTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.vvings.ocpsystem.pojo.OrderInfo" useGeneratedKeys="true" keyProperty="id" >
+    insert into opc_order_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="childId != null" >
+        child_id,
+      </if>
+      <if test="dealerId != null" >
+        dealer_id,
+      </if>
+      <if test="depotId != null" >
+        depot_id,
+      </if>
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="getProductYear != null" >
+        get_product_year,
+      </if>
+      <if test="getProductMonth != null" >
+        get_product_month,
+      </if>
+      <if test="getProductMonthDetailed != null" >
+        get_product_month_detailed,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="area != null" >
+        area,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason,
+      </if>
+      <if test="totalVolume != null" >
+        total_volume,
+      </if>
+      <if test="totalCount != null" >
+        total_count,
+      </if>
+      <if test="totalAmount != null" >
+        total_amount,
+      </if>
+      <if test="firstVerifyName != null" >
+        first_verify_name,
+      </if>
+      <if test="firstVerifyTime != null" >
+        first_verify_time,
+      </if>
+      <if test="reviewVerifyName != null" >
+        review_verify_name,
+      </if>
+      <if test="reviewVerifyTime != null" >
+        review_verify_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="childId != null" >
+        #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="dealerId != null" >
+        #{dealerId,jdbcType=INTEGER},
+      </if>
+      <if test="depotId != null" >
+        #{depotId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="getProductYear != null" >
+        #{getProductYear,jdbcType=INTEGER},
+      </if>
+      <if test="getProductMonth != null" >
+        #{getProductMonth,jdbcType=INTEGER},
+      </if>
+      <if test="getProductMonthDetailed != null" >
+        #{getProductMonthDetailed,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="totalVolume != null" >
+        #{totalVolume,jdbcType=INTEGER},
+      </if>
+      <if test="totalCount != null" >
+        #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalAmount != null" >
+        #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="firstVerifyName != null" >
+        #{firstVerifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstVerifyTime != null" >
+        #{firstVerifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewVerifyName != null" >
+        #{reviewVerifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewVerifyTime != null" >
+        #{reviewVerifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.vvings.ocpsystem.pojo.OrderInfo" >
+    update opc_order_info
+    <set >
+      <if test="childId != null" >
+        child_id = #{childId,jdbcType=INTEGER},
+      </if>
+      <if test="dealerId != null" >
+        dealer_id = #{dealerId,jdbcType=INTEGER},
+      </if>
+      <if test="depotId != null" >
+        depot_id = #{depotId,jdbcType=INTEGER},
+      </if>
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="getProductYear != null" >
+        get_product_year = #{getProductYear,jdbcType=INTEGER},
+      </if>
+      <if test="getProductMonth != null" >
+        get_product_month = #{getProductMonth,jdbcType=INTEGER},
+      </if>
+      <if test="getProductMonthDetailed != null" >
+        get_product_month_detailed = #{getProductMonthDetailed,jdbcType=INTEGER},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        area = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="rejectReason != null" >
+        reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      </if>
+      <if test="totalVolume != null" >
+        total_volume = #{totalVolume,jdbcType=INTEGER},
+      </if>
+      <if test="totalCount != null" >
+        total_count = #{totalCount,jdbcType=INTEGER},
+      </if>
+      <if test="totalAmount != null" >
+        total_amount = #{totalAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="firstVerifyName != null" >
+        first_verify_name = #{firstVerifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="firstVerifyTime != null" >
+        first_verify_time = #{firstVerifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="reviewVerifyName != null" >
+        review_verify_name = #{reviewVerifyName,jdbcType=VARCHAR},
+      </if>
+      <if test="reviewVerifyTime != null" >
+        review_verify_time = #{reviewVerifyTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.vvings.ocpsystem.pojo.OrderInfo" >
+    update opc_order_info
+    set child_id = #{childId,jdbcType=INTEGER},
+      dealer_id = #{dealerId,jdbcType=INTEGER},
+      depot_id = #{depotId,jdbcType=INTEGER},
+      order_id = #{orderId,jdbcType=VARCHAR},
+      get_product_year = #{getProductYear,jdbcType=INTEGER},
+      get_product_month = #{getProductMonth,jdbcType=INTEGER},
+      get_product_month_detailed = #{getProductMonthDetailed,jdbcType=INTEGER},
+      note = #{note,jdbcType=VARCHAR},
+      area = #{area,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER},
+      reject_reason = #{rejectReason,jdbcType=VARCHAR},
+      total_volume = #{totalVolume,jdbcType=INTEGER},
+      total_count = #{totalCount,jdbcType=INTEGER},
+      total_amount = #{totalAmount,jdbcType=DECIMAL},
+      first_verify_name = #{firstVerifyName,jdbcType=VARCHAR},
+      first_verify_time = #{firstVerifyTime,jdbcType=TIMESTAMP},
+      review_verify_name = #{reviewVerifyName,jdbcType=VARCHAR},
+      review_verify_time = #{reviewVerifyTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

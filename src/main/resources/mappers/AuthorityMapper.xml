@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vvings.ocpsystem.dao.AuthorityMapper" >
+  <resultMap id="BaseResultMap" type="org.vvings.ocpsystem.pojo.Authority" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="authority_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="uri" jdbcType="VARCHAR" javaType="java.lang.String" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, authority_name, uri
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from operation_authority
+    where id = #{id,jdbcType=INTEGER} order by id
+  </select>
+    <select id="selectByRoleId" resultType="org.vvings.ocpsystem.pojo.Authority">
+      select <include refid="Base_Column_List"/> from operation_authority where role_id
+    </select>
+  <select id="getAll" resultType="org.vvings.ocpsystem.pojo.Authority">
+    select <include refid="Base_Column_List"/> from operation_authority
+  </select>
+  <select id="selectAll" resultType="org.vvings.ocpsystem.pojo.Authority">
+    select <include refid="Base_Column_List"/> from operation_authority
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from operation_authority
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.vvings.ocpsystem.pojo.Authority" >
+    insert into operation_authority (id, authority_name, uri
+      )
+    values (#{id,jdbcType=INTEGER}, #{authorityName,jdbcType=VARCHAR}, #{uri,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.vvings.ocpsystem.pojo.Authority" >
+    insert into operation_authority
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="authorityName != null" >
+        authority_name,
+      </if>
+      <if test="uri != null" >
+        uri,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="authorityName != null" >
+        #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null" >
+        #{uri,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.vvings.ocpsystem.pojo.Authority" >
+    update operation_authority
+    <set >
+      <if test="authorityName != null" >
+        authority_name = #{authorityName,jdbcType=VARCHAR},
+      </if>
+      <if test="uri != null" >
+        uri = #{uri,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.vvings.ocpsystem.pojo.Authority" >
+    update operation_authority
+    set authority_name = #{authorityName,jdbcType=VARCHAR},
+      uri = #{uri,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

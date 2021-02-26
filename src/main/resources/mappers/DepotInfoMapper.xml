@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vvings.ocpsystem.dao.DepotInfoMapper" >
+  <resultMap id="BaseResultMap" type="org.vvings.ocpsystem.pojo.DepotInfo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="addressInstitution" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="note" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="is_default" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="uuid" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="consumer_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, `name`, phone, address, addressInstitution, note, is_default, uuid, consumer_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opc_depot_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from opc_depot_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.vvings.ocpsystem.pojo.DepotInfo" >
+    insert into opc_depot_info (id, `name`, phone, 
+      address, addressInstitution, note, 
+      is_default, uuid, consumer_id
+      )
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{addressinstitution,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{isDefault,jdbcType=BIT}, #{uuid,jdbcType=VARCHAR}, #{consumerId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="org.vvings.ocpsystem.pojo.DepotInfo" >
+    insert into opc_depot_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+      <if test="addressinstitution != null" >
+        addressInstitution,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="isDefault != null" >
+        is_default,
+      </if>
+      <if test="uuid != null" >
+        uuid,
+      </if>
+      <if test="consumerId != null" >
+        consumer_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addressinstitution != null" >
+        #{addressinstitution,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="consumerId != null" >
+        #{consumerId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.vvings.ocpsystem.pojo.DepotInfo" >
+    update opc_depot_info
+    <set >
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="addressinstitution != null" >
+        addressInstitution = #{addressinstitution,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefault != null" >
+        is_default = #{isDefault,jdbcType=BIT},
+      </if>
+      <if test="uuid != null" >
+        uuid = #{uuid,jdbcType=VARCHAR},
+      </if>
+      <if test="consumerId != null" >
+        consumer_id = #{consumerId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.vvings.ocpsystem.pojo.DepotInfo" >
+    update opc_depot_info
+    set `name` = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      addressInstitution = #{addressinstitution,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      is_default = #{isDefault,jdbcType=BIT},
+      uuid = #{uuid,jdbcType=VARCHAR},
+      consumer_id = #{consumerId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

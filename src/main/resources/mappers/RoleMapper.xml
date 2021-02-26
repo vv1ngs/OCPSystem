@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vvings.ocpsystem.dao.RoleMapper" >
+  <resultMap id="BaseResultMap" type="org.vvings.ocpsystem.pojo.Role" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="describe" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, `name`, `describe`, `status`,`create_time`,`update_time`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opc_role
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from opc_role
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="org.vvings.ocpsystem.pojo.Role" >
+    insert into opc_role (id, `name`, `describe`, 
+      `status`,`create_time`,`update_time`)
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{describe,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT},#{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="org.vvings.ocpsystem.pojo.Role" >
+    insert into opc_role
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        `name`,
+      </if>
+      <if test="describe != null" >
+        `describe`,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.vvings.ocpsystem.pojo.Role" >
+    update opc_role
+    <set >
+      <if test="name != null" >
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="describe != null" >
+        `describe` = #{describe,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=BIT},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.vvings.ocpsystem.pojo.Role" >
+    update opc_role
+    set `name` = #{name,jdbcType=VARCHAR},
+      `describe` = #{describe,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=BIT},
+       create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectName" parameterType="String" resultType="java.lang.Integer">
+    select count(1) from opc_role where name=#{name}
+  </select>
+
+  <select id="selectAll" resultType="org.vvings.ocpsystem.pojo.Role">
+    select
+    <include refid="Base_Column_List"/>
+    from opc_role
+  </select>
+
+
+  <select id="checkRoleId" resultType="java.lang.Integer">
+    select count(1) from opc_role where id=#{rid}
+  </select>
+
+  <select id="searchRoleByKeyWord" resultType="org.vvings.ocpsystem.pojo.Role">
+    select <include refid="Base_Column_List"/>
+    from opc_role
+    <where>
+    <if test="username != null">
+    and `name` like concat('%',#{username},'%')
+    </if>
+    <if test="status != null">
+      and status=#{status}
+    </if>
+  </where>
+</select>
+
+  <select id="searchRoleByPingYingFirst" resultType="org.vvings.ocpsystem.pojo.Role">
+    select <include refid="Base_Column_List"/>
+    from opc_role
+    <where>
+    <if test="username != null">
+    and pinyin(name) like concat('%',#{username},'%')
+    </if>
+    <if test="status != null">
+      and status=#{status}
+    </if>
+  </where>
+  </select>
+
+  <select id="searchRoleByPingYing" resultType="org.vvings.ocpsystem.pojo.Role">
+    select <include refid="Base_Column_List"/>
+    from opc_role
+    <where>
+    <if test="username != null">
+    and to_pinyin(name) like concat('%',#{username},'%')
+    </if>
+    <if test="status != null">
+      and status=#{status}
+    </if>
+  </where>
+  </select>
+  <select id="selectByRoleId" resultType="org.vvings.ocpsystem.pojo.Role">
+    select <include refid="Base_Column_List"/> from opc_role where role_id=#{roleId}
+  </select>
+
+</mapper>

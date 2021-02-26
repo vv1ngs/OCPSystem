@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.vvings.ocpsystem.dao.DealerChildMapper" >
+  <resultMap id="BaseResultMap" type="org.vvings.ocpsystem.pojo.DealerChild" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="realname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="role_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="parent_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sex" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="note" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="status" jdbcType="BIT" javaType="java.lang.Boolean" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, username,realname, `password`,role_id,parent_id, sex, phone, email, note, `status`
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from opc_dealer_child
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectByUsername" resultType="org.vvings.ocpsystem.pojo.DealerChild">
+    select <include refid="Base_Column_List"/> from opc_dealer_child where username =#{username}
+  </select>
+
+  <select id="selectName" resultType="java.lang.Integer">
+    select count(1) from opc_dealer_child where username = #{username}
+  </select>
+
+  <select id="searchRoleByKeyWord" resultType="org.vvings.ocpsystem.pojo.DealerChild">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_child
+    <where>
+    <if test="username != null">
+      and username like concat('%',#{username},'%')
+    </if>
+    <if test="realname != null">
+      and realname like concat('%',#{realname},'%')
+    </if>
+    <if test="phone != null">
+      and phone like concat('%',#{phone},'%')
+    </if>
+    <if test="sex != null">
+      and sex = #{sex}
+    </if>
+      <if test="roleId != null" >
+        role_id = #{roleId}
+      </if>
+    <if test="status != null">
+      and status=#{status}
+    </if>
+    </where>
+  </select>
+
+  <select id="searchRoleByPingYingFirst" resultType="org.vvings.ocpsystem.pojo.DealerChild">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_child
+    <where>
+      <if test="username != null">
+        and pinyin(username) like concat('%',#{username},'%')
+      </if>
+      <if test="realname != null">
+        and pinyin(realname) like concat('%',#{realname},'%')
+      </if>
+      <if test="phone != null">
+        and phone like concat('%',#{phone},'%')
+      </if>
+      <if test="sex != null">
+        and sex = #{sex}
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId}
+      </if>
+      <if test="status != null">
+        and status=#{status}
+      </if>
+    </where>
+  </select>
+  <select id="selectAll" resultType="org.vvings.ocpsystem.pojo.DealerChild">
+    select <include refid="Base_Column_List"/> from opc_dealer_child
+  </select>
+  <select id="searchRoleByPingYing" resultType="org.vvings.ocpsystem.pojo.DealerChild">
+    select <include refid="Base_Column_List"/>
+    from opc_dealer_child
+    <where>
+      <if test="username != null">
+        and to_pinyin(username) like concat('%',#{username},'%')
+      </if>
+      <if test="realname != null">
+        and to_pinyin(realname) like concat('%',#{realname},'%')
+      </if>
+      <if test="phone != null">
+        and phone like concat('%',#{phone},'%')
+      </if>
+      <if test="sex != null">
+        and sex = #{sex}
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId}
+      </if>
+      <if test="status != null">
+        and status=#{status}
+      </if>
+    </where>
+  </select>
+    <select id="selectByparentID" resultType="org.vvings.ocpsystem.pojo.DealerChild">
+      select <include refid="Base_Column_List"/> from opc_dealer_child where parent_id = #{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from opc_dealer_child
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insert" parameterType="org.vvings.ocpsystem.pojo.DealerChild" >
+    insert into opc_dealer_child (id, realname,`password`, role_id,parent_id,
+      sex, phone, email, note, 
+      `status`)
+    values (#{id,jdbcType=INTEGER}, #{realname,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR}, #{roleId,jdbcType=INTEGER},
+    #{parentId,jdbcType=INTEGER},
+      #{sex,jdbcType=BIT}, #{phone,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{note,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="org.vvings.ocpsystem.pojo.DealerChild" >
+    insert into opc_dealer_child
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test=" username != null">
+        username,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="password != null">
+        `password`,
+      </if>
+      <if test="roleId != null" >
+        role_id,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+      <if test="status != null" >
+        `status`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=BIT},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="org.vvings.ocpsystem.pojo.DealerChild" >
+    update opc_dealer_child
+    <set >
+        <if test="username != null">
+          username= #{username,jdbcType=VARCHAR},
+        </if>
+      <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        `password` =#{password,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=INTEGER},
+      </if>
+      <if test="parentId != null" >
+        parent_id=#{parentId,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=BIT},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        `status` = #{status,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="org.vvings.ocpsystem.pojo.DealerChild" >
+    update opc_dealer_child
+    set realname = #{realname,jdbcType=VARCHAR},
+        `password`=#{password,jdbcType=VARCHAR},
+      role_id = #{roleId,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=BIT},
+      phone = #{phone,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      note = #{note,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
